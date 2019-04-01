@@ -8,8 +8,14 @@ pipeline{
         stage('Building Image'){
             steps{
                 script{
-                   def app= docker.tag("5435658a63ac srivatsanv1991/srivatsanv:latest")
-                    app.push("latest")
+                   dockerBuildAndPublish {
+            repositoryName('srivatsanv1991/srivatsanv')
+            tag('${GIT_REVISION,length=9}')
+            registryCredentials('docker-hub-cred')
+            forcePull(false)
+            forceTag(false)
+            createFingerprints(false)
+            skipDecorate()
                 }
             }
         }
