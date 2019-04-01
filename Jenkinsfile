@@ -1,7 +1,11 @@
-node{
-  checkout scm
-  docker.withDockerRegistry('https://index.docker.io/','docker-hub-cred'){
-                    def app=docker.build("steve/alpine-smarter:1.0", '.')
-    app.push()
-  }
+node {
+    checkout scm
+
+    docker.withRegistry('https://registry.example.com', 'credentials-id') {
+
+        def customImage = docker.build("steve/alpine-smarter:1.0")
+
+        /* Push the container to the custom Registry */
+        customImage.push()
+    }
 }
