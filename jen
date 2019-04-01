@@ -1,0 +1,16 @@
+pipeline{
+    agent any
+    environment {
+        registry = "srivatsanv1991/srivatsanv"
+        registryCredential = "dockerhub"
+    }
+    stages{
+        stage('Building Image'){
+            steps{
+                script{
+                    docker.build.registry+":$BUILD_NUMBER"
+                }
+            }
+        }
+    }
+}

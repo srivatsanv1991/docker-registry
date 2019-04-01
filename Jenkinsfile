@@ -1,16 +1,8 @@
-pipeline{
-    agent any
-    environment {
-        registry = "docker_hub_account/repository_name"
-        registryCredential = "dockerhub"
-    }
-    stages{
-        stage('Building Image'){
-            steps{
-                script{
-                    docker.build.registry+":$BUILD_NUMBER"
-                }
-            }
-        }
-    }
+node{
+stage('docker build/push') {
+  docker.withDockerRegistry('https://index.docker.io/','docker-hub-cred'){
+                    def app=docker.build("srivatsanv1991/srivatsanv:${commit_id}", '.')
+    app.push()
+  }
+}
 }
