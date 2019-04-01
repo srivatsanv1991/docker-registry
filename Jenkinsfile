@@ -1,14 +1,15 @@
 pipeline{
     agent any
     environment {
-        registry = "docker_hub_account/repository_name"
-        registryCredential = "dockerhub"
+        registry = "srivatsanv1991/srivatsanv"
+        registryCredential = "docker-hub-cred"
     }
     stages{
         stage('Building Image'){
             steps{
                 script{
-                    docker.build.registry+":$BUILD_NUMBER"
+                   def app= docker.tag("5435658a63ac srivatsanv1991/srivatsanv:latest")
+                    app.push("latest")
                 }
             }
         }
