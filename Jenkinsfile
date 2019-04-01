@@ -8,14 +8,8 @@ pipeline{
         stage('Building Image'){
             steps{
                 script{
-                   dockerBuildAndPublish {
-            repositoryName('srivatsanv1991/srivatsanv')
-            tag('${GIT_REVISION,length=9}')
-            registryCredentials('docker-hub-cred')
-            forcePull(false)
-            forceTag(false)
-            createFingerprints(false)
-            skipDecorate()
+                   docker.withDockerRegistry("https://hub.docker.com/","docker-hub-cred")
+                    def app=docker.build("srivatsanv1991/srivatsanv:${commit_id}", '.').push()
                 }
                 }
             }
