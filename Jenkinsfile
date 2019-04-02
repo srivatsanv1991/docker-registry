@@ -1,33 +1,9 @@
-pipeline {
-  environment {
-    registry = "srivatsanv1991/srivatsanv"
-    registryCredential = 'docker-hub-cred'
-    dockerImage = ''
-  }
-  agent any
-  stages {
-    stage('Cloning Git') {
-      steps {
-        git 'https://github.com/srivatsanv1991/docker-registry.git'
-      }
+node {
+checkout scm
+ def customImage = docker.build “srivatsan/alpine-smarter:$BUILD_NUMBER”
+
+    docker.withRegistry('', 'docker-hub-cred') {
+
+        customImage.push()
     }
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
-        }
-      }
-    }
-    stage('Deploy Image') {
-      steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-          }
-        }
-      }
-    }
-  }
 }
-
-
