@@ -1,7 +1,7 @@
 
 pipeline {
   environment {
-    registry = "srivatsanv1991/srivatsanv"
+    registry = "srivatsanv1991/docker-jenkins-pipeline"
     registryCredential = 'docker-hub-cred'
     dockerImage = ''
   }
