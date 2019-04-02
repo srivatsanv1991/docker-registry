@@ -1,12 +1,8 @@
 node {
     checkout scm
-def customImage = docker.build("steve/alpine-smarter:1.0")
+    def customImage = docker.build "srivatsanv1991/srivatsanv:$BUILD_NUMBER"
   
-    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-cred') {
-
-        
-
-        /* Push the container to the custom Registry */
-        customImage.push('latest')
+    docker.withRegistry('', 'docker-hub-cred') {
+        customImage.push()
     }
 }
