@@ -1,11 +1,29 @@
-node {
-    checkout scm
-
-    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-cred') {
-
-        def customImage = docker.build("steve/alpine-smarter:1.0")
-
-        /* Push the container to the custom Registry */
-        customImage.push('latest')
+pipeline {
+  environment {
+    registry = "srivatsanv1991/srivatsanv"
+    registryCredential = 'docker-hub-cred'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/srivatsanv1991/docker-registry.git'
+      }
     }
-}
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
