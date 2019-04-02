@@ -1,12 +1,33 @@
-node {
-  stage('Preparation'){
-    checkout scm
-  }
 
-stage('build/push'){
- def customImage = docker.build "srivatsanv1991/srivatsanv:$BUILD_NUMBER"
-    docker.withRegistry('', 'docker-hub-cred') {
-        customImage.push()
+pipeline {
+  environment {
+    registry = "srivatsanv1991/srivatsanv"
+    registryCredential = 'docker-hub-cred'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/srivatsanv1991/docker-registry.git'
+      }
     }
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+  }
 }
-}
+
