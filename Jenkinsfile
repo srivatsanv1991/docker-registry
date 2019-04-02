@@ -1,7 +1,7 @@
 node {
     checkout scm
 
-    docker.withRegistry('https://registry-1.docker.io/v2/', 'docker-hub-cred') {
+    docker.withRegistry('https://hub.docker.com/r/srivatsanv1991/srivatsanv', 'docker-hub-cred') {
 
         def customImage = docker.build("steve/alpine-smarter:1.0")
 
