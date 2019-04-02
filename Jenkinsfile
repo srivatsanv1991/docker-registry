@@ -3,7 +3,7 @@ node {
 
     docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-cred') {
 
-        def customImage = docker.build("steve/alpine-smarter:1.0")
+        def customImage = docker.build("steve/alpine-smarter:1.0 srivatsanv1991/srivatsanv")
 
         /* Push the container to the custom Registry */
         customImage.push()
